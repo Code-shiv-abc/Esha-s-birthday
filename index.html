@@ -3,57 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>A Chronicle for Isha</title>
+    <title>Isha's Celestial Journey</title>
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <main>
-        <!-- Act I: The Prelude -->
-        <section id="act-one">
+    <canvas id="starfield"></canvas>
+
+    <div id="scene-container">
+        <div id="scene1-text" class="scene-text">
             <h1>Radhey Radhey</h1>
-            <div class="scroll-indicator"></div>
-        </section>
+            <p class="prompt">Begin the Journey</p>
+        </div>
+        <div id="scene2-text-1" class="scene-text memory-text">
+            <p><strong>Devotion:</strong> A quiet strength, a guiding light that inspires all who know you.</p>
+        </div>
+        <div id="scene2-text-2" class="scene-text memory-text">
+            <p><strong>Compassion:</strong> The instinct to nurture, to heal, and to love without condition.</p>
+        </div>
+        <div id="scene2-text-3" class="scene-text memory-text">
+            <p><strong>Wanderlust:</strong> A spirit of adventure, forever seeking beauty in new horizons.</p>
+        </div>
+        <div id="final-message-card" class="scene-text">
+            <h3>To a Truly Special Friend</h3>
+            <p>May your year ahead be as bright and beautiful as the journey we've all been on with you. You bring so much light to the world, and today, we celebrate all of it. Keep shining.</p>
+            <p class="closing">With all our love,</p>
+        </div>
+    </div>
 
-        <!-- Act II: The Virtues -->
-        <section id="act-two">
-            <div class="virtues-container">
-                <div class="virtue">
-                    <span>Devotion</span>
-                    <span class="tooltip">A quiet strength found in a connection to something greater.</span>
-                </div>
-                <div class="virtue">
-                    <span>Compassion</span>
-                    <span class="tooltip">The instinct to nurture, to heal, and to leave the world a little brighter.</span>
-                </div>
-                <div class="virtue">
-                    <span>Wanderlust</span>
-                    <span class="tooltip">A soul's need to explore, to see with new eyes, and to find home in the journey.</span>
-                </div>
-            </div>
-        </section>
-
-        <!-- Act III: The Gallery -->
-        <section id="act-three">
-            <div class="gallery-container">
-                <img src="devotion.png" alt="Isha praying" class="gallery-image">
-                <img src="compassion.png" alt="Isha touching flowers" class="gallery-image">
-                <img src="wanderlust.png" alt="Isha in the Subway" class="gallery-image">
-            </div>
-        </section>
-
-        <!-- Act IV: The Next Chapter -->
-        <section id="act-four">
-            <h2>The Next Chapter</h2>
-            <div class="input-container">
-                <input type="text" id="user-text-input" placeholder="What will you write in it?">
-                <button id="submit-button">Continue</button>
-            </div>
-            <p id="final-message"></p>
-        </section>
-    </main>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
