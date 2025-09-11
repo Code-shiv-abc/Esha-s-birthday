@@ -52,7 +52,7 @@ body {
     width: 90%;
     max-width: 500px;
     pointer-events: none; /* Allow mouse interaction with canvas */
-    transition: opacity 1.5s cubic-bezier(0.19, 1, 0.22, 1);
+    /* transition: opacity 1.5s cubic-bezier(0.19, 1, 0.22, 1); // This is handled by GSAP */
 }
 
 #scene1-text h1 {
@@ -127,5 +127,37 @@ body {
     100% {
         opacity: 1;
         transform: scale(1);
+    }
+}
+
+/* --- RESPONSIVE DESIGN --- */
+@media (max-width: 768px) {
+    .scene-text {
+        width: 95%;
+    }
+
+    #scene1-text h1 {
+        font-size: clamp(2.5rem, 12vw, 4rem);
+    }
+
+    #scene1-text .prompt {
+        font-size: clamp(0.9rem, 5vw, 1rem);
+    }
+
+    .memory-text {
+        padding: 1.25rem;
+        font-size: clamp(0.9rem, 4vw, 1.1rem);
+    }
+
+    #final-message-card {
+        padding: 1.5rem;
+    }
+
+    #final-message-card h3 {
+        font-size: 1.8rem;
+    }
+
+    #final-message-card p {
+        font-size: 1rem;
     }
 }
