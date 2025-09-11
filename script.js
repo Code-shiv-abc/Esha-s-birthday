@@ -9,27 +9,47 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- STATE MANAGEMENT ---
     let currentScene = 0;
     let isAnimating = false;
-    const scenes = [
-        { zoom: 1, x: 0, y: 0, text: '#scene1-text' },
-        { zoom: 2.5, x: -0.8, y: -0.3, text: '#scene2-text-1', imgIndex: 0 },
-        { zoom: 2.5, x: 0.8, y: 0, text: '#scene2-text-2', imgIndex: 1 },
-        { zoom: 2.5, x: 0, y: 1.2, text: '#scene2-text-3', imgIndex: 2 },
-        { isFinale: true } // Scene 4 is the finale trigger
-    ];
-    const camera = { x: 0, y: 0, zoom: 1 };
+    let scenes, imagePositions, camera;
+
+    // --- RESPONSIVE CONFIG ---
+    const sceneConfig = {
+        landscape: {
+            scenes: [
+                { zoom: 1, x: 0, y: 0, text: '#scene1-text' },
+                { zoom: 2.5, x: -0.8, y: -0.3, text: '#scene2-text-1', imgIndex: 0 },
+                { zoom: 2.5, x: 0.8, y: 0, text: '#scene2-text-2', imgIndex: 1 },
+                { zoom: 2.5, x: 0, y: 1.2, text: '#scene2-text-3', imgIndex: 2 },
+                { isFinale: true }
+            ],
+            imagePositions: [
+                { x: -0.8, y: -0.3, scale: 0.0005, alpha: 0 },
+                { x: 0.8, y: 0, scale: 0.0005, alpha: 0 },
+                { x: 0, y: 1.2, scale: 0.0005, alpha: 0 },
+            ]
+        },
+        portrait: {
+            scenes: [
+                { zoom: 1, x: 0, y: 0, text: '#scene1-text' },
+                { zoom: 2.8, x: 0, y: -0.5, text: '#scene2-text-1', imgIndex: 0 },
+                { zoom: 2.8, x: 0, y: 0.5, text: '#scene2-text-2', imgIndex: 1 },
+                { zoom: 2.8, x: 0, y: 1.5, text: '#scene2-text-3', imgIndex: 2 },
+                { isFinale: true }
+            ],
+            imagePositions: [
+                { x: 0, y: -0.5, scale: 0.0006, alpha: 0 },
+                { x: 0, y: 0.5, scale: 0.0006, alpha: 0 },
+                { x: 0, y: 1.5, scale: 0.0006, alpha: 0 },
+            ]
+        }
+    };
 
     // --- PARTICLES ---
     let particles = [];
-    const numParticles = window.innerWidth > 768 ? 1200 : 500;
+    let numParticles;
 
     // --- IMAGES ---
     const images = [];
-    const imageSources = ['devotion.png', 'compassion.png', 'wanderlust.png'];
-    const imagePositions = [
-        { x: -0.8, y: -0.3, scale: 0.0005, alpha: 0 },
-        { x: 0.8, y: 0, scale: 0.0005, alpha: 0 },
-        { x: 0, y: 1.2, scale: 0.0005, alpha: 0 },
-    ];
+    const imageSources = ['devotion.png', 'compassion.jpg', 'wanderlust.png'];
     let imagesLoaded = 0;
 
     function loadImages() {
@@ -153,18 +173,31 @@ document.addEventListener('DOMContentLoaded', () => {
         isAnimating = true;
 
         const oldScene = scenes[currentScene];
-        if (oldScene && oldScene.imgIndex !== undefined) {
-             gsap.to(imagePositions[oldScene.imgIndex], { alpha: 0, duration: 1, ease: 'power1.in' });
+        if (oldScene) {
+            if (oldScene.text) {
+                // Fade out and then hide from layout
+                gsap.to(oldScene.text, {
+                    opacity: 0,
+                    duration: 0.8,
+                    ease: "power1.in",
+                    onComplete: () => {
+                        gsap.set(oldScene.text, { display: 'none' });
+                    }
+                });
+            }
+            if (oldScene.imgIndex !== undefined) {
+                gsap.to(imagePositions[oldScene.imgIndex], { alpha: 0, duration: 1, ease: 'power1.in' });
+            }
         }
 
         currentScene = sceneIndex;
         const targetScene = scenes[currentScene];
 
-        document.querySelectorAll('.scene-text').forEach(el => {
-            gsap.to(el, { opacity: 0, duration: 0.8, ease: "power1.in" });
-        });
-
         if (targetScene.isFinale) {
+            // Ensure all memory texts are hidden before the finale
+            document.querySelectorAll('.memory-text').forEach(el => {
+                gsap.to(el, { opacity: 0, duration: 0.5, onComplete: () => el.style.display = 'none' });
+            });
             startFinale();
             return;
         }
@@ -173,16 +206,23 @@ document.addEventListener('DOMContentLoaded', () => {
             zoom: targetScene.zoom,
             x: targetScene.x * width, y: targetScene.y * height,
             duration: 2.5, ease: "power2.inOut",
+            onComplete: () => isAnimating = false
         });
 
         if (targetScene.imgIndex !== undefined) {
             gsap.to(imagePositions[targetScene.imgIndex], { alpha: 1, duration: 1.5, delay: 1, ease: 'power1.out' });
         }
 
-        gsap.to(targetScene.text, {
-            opacity: 1, duration: 1.5, delay: 1.5, ease: "power1.out",
-            onComplete: () => isAnimating = false
-        });
+        if (targetScene.text) {
+            // Set display to block and opacity to 0 before fading in
+            gsap.set(targetScene.text, { display: 'block', opacity: 0 });
+            gsap.to(targetScene.text, {
+                opacity: 1,
+                duration: 1.5,
+                delay: 1.5,
+                ease: "power1.out"
+            });
+        }
     }
 
     // --- EVENT LISTENERS & INIT ---
@@ -191,7 +231,9 @@ document.addEventListener('DOMContentLoaded', () => {
             if (isAnimating) return;
             navigateToScene(currentScene + (e.deltaY > 0 ? 1 : -1));
         });
-        window.addEventListener('resize', init);
+        window.addEventListener('resize', () => {
+            startExperience(); // Re-initialize the whole experience on resize
+        });
     }
 
     function init() {
@@ -199,13 +241,33 @@ document.addEventListener('DOMContentLoaded', () => {
         height = window.innerHeight;
         canvas.width = width;
         canvas.height = height;
+
+        const isPortrait = height > width;
+        const config = isPortrait ? sceneConfig.portrait : sceneConfig.landscape;
+
+        scenes = config.scenes;
+        imagePositions = JSON.parse(JSON.stringify(config.imagePositions)); // Deep copy to allow mutation
+        camera = { x: 0, y: 0, zoom: 1 };
+        numParticles = width > 768 ? 1200 : 500;
+
         particles = Array.from({ length: numParticles }, () => new Particle());
+
+        // Reset text visibility
+        document.querySelectorAll('.scene-text').forEach(el => el.style.opacity = 0);
     }
 
     function startExperience() {
+        isAnimating = false;
+        currentScene = 0;
         init();
-        animate();
-        setupEventListeners();
+
+        // Only setup listeners once
+        if (!window.listenersAttached) {
+            animate();
+            setupEventListeners();
+            window.listenersAttached = true;
+        }
+
         navigateToScene(0);
     }
 
