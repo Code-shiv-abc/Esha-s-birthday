@@ -77,7 +77,7 @@ particles.push(s);
 const loader = new PIXI.Loader();
 loader
 .add('devotion', 'devotion.png')
-.add('compassion', 'compassion.png')
+.add('compassion', 'compassion.jpg')
 .add('wanderlust', 'wanderlust.png')
 .load((loader, resources) => {
 // create sprites and place at z-depths
