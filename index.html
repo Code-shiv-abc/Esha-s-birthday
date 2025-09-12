@@ -20,6 +20,48 @@
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div id="lotus-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; display: none;">
+        <svg id="lotus" viewbox="0 0 100 100" preserveaspectratio="xMidYMid meet" style="width: 100%; height: 100%; max-width: 400px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <!-- Petals -->
+            <g id="lotus-petals">
+                <path class="lotus-petal" d="M50 100 C 40 70, 40 70, 20 50 C 40 40, 40 40, 50 0 C 60 40, 60 40, 80 50 C 60 70, 60 70, 50 100 Z" fill="#F472B6"/>
+                <path class="lotus-petal" d="M50 100 C 40 70, 40 70, 20 50 C 40 40, 40 40, 50 0 C 60 40, 60 40, 80 50 C 60 70, 60 70, 50 100 Z" fill="#F472B6" transform="rotate(60 50 50)"/>
+                <path class="lotus-petal" d="M50 100 C 40 70, 40 70, 20 50 C 40 40, 40 40, 50 0 C 60 40, 60 40, 80 50 C 60 70, 60 70, 50 100 Z" fill="#F472B6" transform="rotate(120 50 50)"/>
+                <path class="lotus-petal" d="M50 100 C 40 70, 40 70, 20 50 C 40 40, 40 40, 50 0 C 60 40, 60 40, 80 50 C 60 70, 60 70, 50 100 Z" fill="#F472B6" transform="rotate(180 50 50)"/>
+                <path class="lotus-petal" d="M50 100 C 40 70, 40 70, 20 50 C 40 40, 40 40, 50 0 C 60 40, 60 40, 80 50 C 60 70, 60 70, 50 100 Z" fill="#F472B6" transform="rotate(240 50 50)"/>
+                <path class="lotus-petal" d="M50 100 C 40 70, 40 70, 20 50 C 40 40, 40 40, 50 0 C 60 40, 60 40, 80 50 C 60 70, 60 70, 50 100 Z" fill="#F472B6" transform="rotate(300 50 50)"/>
+            </g>
+        </svg>
+    </div>
+    <div id="rose-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; display: none;">
+        <svg id="rose" viewbox="0 0 100 100" preserveaspectratio="xMidYMid meet" style="width: 100%; height: 100%; max-width: 400px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <!-- Rose Petals -->
+            <g id="rose-petals">
+                <path class="rose-petal" d="M50,85 C20,100 20,70 20,50 C20,30 40,15 50,15 C60,15 80,30 80,50 C80,70 80,100 50,85 Z" fill="#E52B50"/>
+                <path class="rose-petal" d="M50,85 C20,100 20,70 20,50 C20,30 40,15 50,15 C60,15 80,30 80,50 C80,70 80,100 50,85 Z" fill="#E52B50" transform="rotate(72 50 50)"/>
+                <path class="rose-petal" d="M50,85 C20,100 20,70 20,50 C20,30 40,15 50,15 C60,15 80,30 80,50 C80,70 80,100 50,85 Z" fill="#E52B50" transform="rotate(144 50 50)"/>
+                <path class="rose-petal" d="M50,85 C20,100 20,70 20,50 C20,30 40,15 50,15 C60,15 80,30 80,50 C80,70 80,100 50,85 Z" fill="#E52B50" transform="rotate(216 50 50)"/>
+                <path class="rose-petal" d="M50,85 C20,100 20,70 20,50 C20,30 40,15 50,15 C60,15 80,30 80,50 C80,70 80,100 50,85 Z" fill="#E52B50" transform="rotate(288 50 50)"/>
+            </g>
+        </svg>
+    </div>
+    <div id="peacock-container" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10; display: none;">
+        <svg id="peacock" viewbox="0 0 100 100" preserveaspectratio="xMidYMid meet" style="width: 100%; height: 100%; max-width: 400px; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+            <!-- Peacock Body -->
+            <g id="peacock-body" transform="translate(0, 20)">
+                <path d="M50 40 C 40 50, 40 70, 50 80 C 60 70, 60 50, 50 40 Z" fill="#0077be"/>
+                <circle cx="50" cy="35" r="5" fill="#005a8d"/>
+            </g>
+            <!-- Peacock Feathers -->
+            <g id="peacock-feathers" transform="translate(0, 20)">
+                <path class="peacock-feather" d="M50 40 C 20 0, 20 0, 50 0 C 80 0, 80 0, 50 40 Z" fill="#00aaff" transform-origin="50% 40%"/>
+                <path class="peacock-feather" d="M50 40 C 20 0, 20 0, 50 0 C 80 0, 80 0, 50 40 Z" fill="#00aaff" transform-origin="50% 40%" transform="rotate(30 50 40)"/>
+                <path class="peacock-feather" d="M50 40 C 20 0, 20 0, 50 0 C 80 0, 80 0, 50 40 Z" fill="#00aaff" transform-origin="50% 40%" transform="rotate(60 50 40)"/>
+                <path class="peacock-feather" d="M50 40 C 20 0, 20 0, 50 0 C 80 0, 80 0, 50 40 Z" fill="#00aaff" transform-origin="50% 40%" transform="rotate(-30 50 40)"/>
+                <path class="peacock-feather" d="M50 40 C 20 0, 20 0, 50 0 C 80 0, 80 0, 50 40 Z" fill="#00aaff" transform-origin="50% 40%" transform="rotate(-60 50 40)"/>
+            </g>
+        </svg>
+    </div>
     <canvas id="starfield"></canvas>
 
     <div id="scene-container">

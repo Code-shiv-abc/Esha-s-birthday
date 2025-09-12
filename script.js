@@ -2,6 +2,13 @@
 
 document.addEventListener('DOMContentLoaded', () => {
     // --- SETUP ---
+    const lotusContainer = document.getElementById('lotus-container');
+    const lotusPetals = document.querySelectorAll('.lotus-petal');
+    const roseContainer = document.getElementById('rose-container');
+    const rosePetals = document.querySelectorAll('.rose-petal');
+    const peacockContainer = document.getElementById('peacock-container');
+    const peacockFeathers = document.querySelectorAll('.peacock-feather');
+    const peacockBody = document.getElementById('peacock-body');
     const canvas = document.getElementById('starfield');
     const ctx = canvas.getContext('2d');
     let width, height;
@@ -15,6 +22,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Base scene structure to keep the code DRY
     const baseScenes = [
         { text: '#scene1-text' },
+        { isRose: true },
+        { isPeacock: true },
         { text: '#scene2-text-1', imgIndex: 0 },
         { text: '#scene2-text-2', imgIndex: 1 },
         { text: '#scene2-text-3', imgIndex: 2 },
@@ -203,6 +212,100 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    function animateLotus() {
+        // Hide the regular text prompt initially
+        gsap.set('#scene1-text', { opacity: 0 });
+        gsap.set(lotusContainer, { display: 'block', opacity: 1 });
+
+        // Animate petals opening
+        gsap.fromTo(lotusPetals,
+            { scale: 0, rotation: (i) => (i * 60) - 45, transformOrigin: '50% 90%' },
+            {
+                scale: 1,
+                rotation: (i) => (i * 60),
+                duration: 2.5,
+                ease: 'power4.out',
+                stagger: 0.1,
+                onComplete: () => {
+                    // After petals open, reveal the "Radhey Radhey" text as if from the center
+                    gsap.set('#scene1-text', { display: 'block', opacity: 0, scale: 0.5 });
+                    gsap.to('#scene1-text', {
+                        opacity: 1,
+                        scale: 1,
+                        duration: 1.5,
+                        ease: "power2.out",
+                        delay: 0.2
+                    });
+
+                    // Fade out lotus after a delay
+                    gsap.to(lotusContainer, {
+                        opacity: 0,
+                        duration: 1,
+                        delay: 2, // Keep lotus on screen for a bit
+                        onComplete: () => gsap.set(lotusContainer, { display: 'none' })
+                    });
+
+                    // We need to set animating to false here to allow navigation
+                    isAnimating = false;
+                }
+            }
+        );
+    }
+
+    function animatePeacock() {
+        gsap.set(peacockContainer, { display: 'block', opacity: 1 });
+        const tl = gsap.timeline({
+            onComplete: () => {
+                gsap.to(peacockContainer, {
+                    opacity: 0,
+                    duration: 1,
+                    delay: 1,
+                    onComplete: () => {
+                        gsap.set(peacockContainer, { display: 'none' });
+                        isAnimating = false;
+                        navigateToScene(currentScene + 1);
+                    }
+                });
+            }
+        });
+
+        tl.fromTo(peacockFeathers,
+            { scaleY: 0, transformOrigin: '50% 100%'},
+            { scaleY: 1, duration: 2, ease: 'power3.out', stagger: 0.1 }
+        )
+        .to([peacockBody, peacockFeathers],
+            { rotation: 5, transformOrigin: '50% 90%', duration: 0.5, yoyo: true, repeat: 5, ease: 'power1.inOut'},
+            "-=0.5"
+        );
+    }
+
+    function animateRose() {
+        gsap.set(roseContainer, { display: 'block', opacity: 1 });
+        gsap.fromTo(rosePetals,
+            { scale: 0, rotation: (i) => (i * 72) - 30, transformOrigin: '50% 80%' },
+            {
+                scale: 1,
+                rotation: (i) => (i * 72),
+                duration: 2,
+                ease: 'power3.out',
+                stagger: 0.1,
+                onComplete: () => {
+                    gsap.to(roseContainer, {
+                        opacity: 0,
+                        duration: 1,
+                        delay: 1,
+                        onComplete: () => {
+                            gsap.set(roseContainer, { display: 'none' });
+                            isAnimating = false;
+                            // Automatically navigate to the next scene
+                            navigateToScene(currentScene + 1);
+                        }
+                    });
+                }
+            }
+        );
+    }
+
     // --- SCENE NAVIGATION ---
     function navigateToScene(sceneIndex) {
         if (isAnimating || sceneIndex < 0 || sceneIndex >= scenes.length) return;
@@ -212,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // --- Fade out old scene ---
         const oldScene = scenes[currentScene];
-        if (oldScene) {
+        if (oldScene && currentScene !== 0) { // Don't fade out scene 0 text, it's handled differently
             if (oldScene.text) {
                 gsap.to(oldScene.text, {
                     opacity: 0, duration: 0.8, ease: "power1.in",
@@ -226,6 +329,43 @@ document.addEventListener('DOMContentLoaded', () => {
 
         currentScene = sceneIndex;
         const targetScene = scenes[currentScene];
+
+        // --- Handle Intro Scene ---
+        if (currentScene === 0) {
+            // This scene is now the lotus animation intro
+            if (prefersReducedMotion) {
+                // Just show the text, no animation
+                gsap.set('#scene1-text', { display: 'block', opacity: 1 });
+                isAnimating = false;
+            } else {
+                animateLotus(); // This function now handles setting isAnimating to false
+            }
+            // Skip the rest of the function for the intro scene
+            return;
+        }
+
+        // --- Handle Rose Scene ---
+        if (targetScene.isRose) {
+            if (prefersReducedMotion) {
+                // Instantly navigate away
+                isAnimating = false;
+                navigateToScene(currentScene + 1);
+            } else {
+                animateRose(); // This function will handle navigating to the next scene
+            }
+            return;
+        }
+
+        // --- Handle Peacock Scene ---
+        if (targetScene.isPeacock) {
+            if (prefersReducedMotion) {
+                isAnimating = false;
+                navigateToScene(currentScene + 1);
+            } else {
+                animatePeacock();
+            }
+            return;
+        }
 
         // --- Handle Finale ---
         if (targetScene.isFinale) {
@@ -241,28 +381,23 @@ document.addEventListener('DOMContentLoaded', () => {
             ? { zoom: 1.2, x: 0, y: 0, duration: 0.5, ease: "power1.inOut" }
             : { zoom: targetScene.zoom, x: targetScene.x * width, y: targetScene.y * height, duration: 2.5, ease: "power2.inOut" };
 
-        gsap.to(camera, {
-            ...cameraAnimation,
-            onComplete: () => isAnimating = false
-        });
+        const tl = gsap.timeline({ onComplete: () => isAnimating = false });
+
+        tl.to(camera, cameraAnimation);
 
         const fadeInDelay = prefersReducedMotion ? 0.5 : 1.5;
 
         if (targetScene.imgIndex !== undefined) {
-            gsap.to(imagePositions[targetScene.imgIndex], { alpha: 1, duration: 1.5, delay: fadeInDelay - 0.5, ease: 'power1.out' });
+            tl.to(imagePositions[targetScene.imgIndex], { alpha: 1, duration: 1.5, ease: 'power1.out' }, `-=${cameraAnimation.duration - fadeInDelay + 0.5}`);
         }
 
         if (targetScene.text) {
             gsap.set(targetScene.text, { display: 'block', opacity: 0 });
-            gsap.to(targetScene.text, {
+            tl.to(targetScene.text, {
                 opacity: 1,
                 duration: 1.5,
-                delay: fadeInDelay,
                 ease: "power1.out"
-            });
-        } else if (prefersReducedMotion) {
-            // If there's no text and we're in reduced motion, we still need to end the animation state
-            isAnimating = false;
+            }, `-=${cameraAnimation.duration - fadeInDelay}`);
         }
     }
 

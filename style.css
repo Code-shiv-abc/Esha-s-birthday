@@ -171,3 +171,29 @@ body {
   /* The main GSAP animations are handled in JavaScript,
      this is just a fallback for simple CSS animations. */
 }
+
+#lotus-container {
+    pointer-events: none;
+}
+
+.lotus-petal {
+    transform-origin: 50% 50%;
+    transition: transform 1s ease-in-out;
+}
+
+#peacock-container {
+    pointer-events: none;
+}
+
+.peacock-feather {
+    transform-origin: 50% 100%;
+}
+
+#rose-container {
+    pointer-events: none;
+}
+
+.rose-petal {
+    transform-origin: 50% 50%;
+    transition: transform 1s ease-in-out;
+}
