@@ -351,7 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!window.listenersAttached) {
             animate();
             setupEventListeners();
-            window.listenersAttached = true;
+        window.listenersAttached = true;
         }
 
         navigateToScene(0);
