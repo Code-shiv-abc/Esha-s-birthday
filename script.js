@@ -338,13 +338,8 @@ gsap.to(finalCard, {autoAlpha:0, duration:0.6, onComplete:()=>gsap.set(finalCard
 function setupReplay(){
 const btn = document.getElementById('replayBtn');
 btn.addEventListener('click', ()=>{
-// scroll to top
-window.scrollTo({top:0,behavior:'smooth'});
-// re-run converge after a short delay when scroll returns to top
-setTimeout(()=>{
-// quick disperse to ensure particles back to orig
-disperseParticles();
-}, 700);
+// Simple reload is the most robust way to reset the complex animation state
+location.reload();
 });
 }
 
