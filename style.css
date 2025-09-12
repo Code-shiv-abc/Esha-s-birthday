@@ -1,199 +1,48 @@
-:root {
-    --deep-space-start: #0a192f;
-    --deep-space-end: #191970;
-    --gold-accent: #FFD700;
-    --soft-white: #E6E6E6;
-    --font-primary: 'Cormorant Garamond', serif;
-    --font-secondary: 'Lora', serif;
+/* Reset + base */
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;width:100%;overflow-x:hidden;font-family:'Lora',serif;background:linear-gradient(180deg,#0a192f 0%, #191970 100%);}
+
+#pixi-container{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+
+/* Overlay container sits above the canvas */
+#overlay{position:fixed;inset:0;z-index:5;pointer-events:none}
+
+.centered{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.headline{font-size:clamp(28px,6vw,72px);letter-spacing:1px;color:#E6E6E6;text-shadow:0 6px 30px rgba(10,25,47,0.6)}
+.gold{color:#FFD700;text-shadow:0 0 18px rgba(255,215,0,0.55),0 6px 30px rgba(10,25,47,0.6)}
+
+.scroll-hint{margin-top:18px;font-size:14px;display:flex;flex-direction:column;align-items:center;opacity:0.95;pointer-events:none}
+.scroll-hint .arrow{font-size:22px;display:block;animation:float 1.6s infinite ease-in-out}
+@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(8px)}100%{transform:translateY(0)}}
+.scroll-hint .hint-text{margin-top:6px;color:#E6E6E6;opacity:0.9}
+
+/* Memory texts */
+#memory-texts{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(880px,90%);pointer-events:none}
+.memory{display:none;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:20px;border-radius:12px;backdrop-filter: blur(4px);box-shadow:0 10px 30px rgba(0,0,0,0.5);color:#E6E6E6}
+.memory h2{font-size:20px;margin-bottom:8px;color:#FFD700}
+.memory p{font-size:16px;line-height:1.4}
+
+/* Final card */
+.card{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);min-width:320px;max-width:700px;padding:28px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));box-shadow:0 20px 60px rgba(0,0,0,0.65);color:#E6E6E6;text-align:center;opacity:0;pointer-events:none}
+.card h2{font-size:22px;color:#FFD700;margin-bottom:12px}
+.card-body{font-size:16px;margin-bottom:16px}
+.closing{font-style:italic;color:#E6E6E6}
+.card-actions{margin-top:12px}
+.btn{pointer-events:auto;padding:10px 16px;border-radius:8px;background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.18);color:#FFD700;cursor:pointer}
+
+/* Visible / hidden helpers animated through JS (gsap will set inline styles) */
+
+/* Scroll track is what we pin for the scroll-driven timeline */
+.scroll-track{height:380vh;width:1px;position:relative;z-index:1}
+
+/* Responsive tweaks */
+@media (max-width:900px){
+.headline{font-size:clamp(28px,9vw,48px)}
+.memory h2{font-size:18px}
+.memory p{font-size:15px}
 }
 
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    background-color: var(--deep-space-start);
-    font-family: var(--font-secondary);
-    color: var(--soft-white);
-    overflow: hidden; /* Critical for scroll-jacking */
-    height: 100vh;
-    width: 100vw;
-}
-
-#starfield {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: radial-gradient(ellipse at bottom, var(--deep-space-start) 0%, var(--deep-space-end) 100%);
-    z-index: -1;
-}
-
-#scene-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    perspective: 1000px;
-}
-
-.scene-text {
-    position: absolute;
-    text-align: center;
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.95);
-    top: 50%;
-    left: 50%;
-    width: 90%;
-    max-width: 500px;
-    pointer-events: none; /* Allow mouse interaction with canvas */
-    /* transition: opacity 1.5s cubic-bezier(0.19, 1, 0.22, 1); // This is handled by GSAP */
-}
-
-#scene1-text h1 {
-    font-family: var(--font-primary);
-    font-size: clamp(3rem, 10vw, 6rem);
-    font-weight: 700;
-    color: var(--gold-accent);
-    text-shadow: 0 0 10px var(--gold-accent), 0 0 20px var(--gold-accent);
-}
-
-#scene1-text .prompt {
-    font-size: clamp(1rem, 4vw, 1.2rem);
-    margin-top: 1.5rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    animation: pulse 2s infinite ease-in-out 3s;
-}
-
-.memory-text {
-    max-width: 350px;
-    font-size: clamp(1rem, 3vw, 1.25rem);
-    line-height: 1.6;
-    background: rgba(10, 25, 47, 0.3);
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 215, 0, 0.2);
-    border-radius: 10px;
-    padding: 1.5rem;
-    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
-}
-
-.memory-text strong {
-    color: var(--gold-accent);
-    font-weight: 700;
-}
-
-#final-message-card {
-    background: rgba(10, 25, 47, 0.7);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 215, 0, 0.3);
-    border-radius: 15px;
-    padding: 2rem;
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    max-width: 450px;
-}
-
-#final-message-card h3 {
-    font-family: var(--font-primary);
-    color: var(--gold-accent);
-    font-size: 2rem;
-    margin-bottom: 1rem;
-}
-
-#final-message-card p {
-    font-size: 1.1rem;
-    line-height: 1.7;
-}
-
-#final-message-card .closing {
-    margin-top: 1.5rem;
-    font-style: italic;
-}
-
-@keyframes pulse {
-    0% {
-        opacity: 1;
-        transform: scale(1);
-    }
-    50% {
-        opacity: 0.7;
-        transform: scale(0.98);
-    }
-    100% {
-        opacity: 1;
-        transform: scale(1);
-    }
-}
-
-/* --- RESPONSIVE DESIGN --- */
-@media (max-width: 768px) {
-    .scene-text {
-        width: 95%;
-    }
-
-    #scene1-text h1 {
-        font-size: clamp(2.5rem, 12vw, 4rem);
-    }
-
-    #scene1-text .prompt {
-        font-size: clamp(0.9rem, 5vw, 1rem);
-    }
-
-    .memory-text {
-        padding: 1.25rem;
-        font-size: clamp(0.9rem, 4vw, 1.1rem);
-    }
-
-    #final-message-card {
-        padding: 1.5rem;
-    }
-
-    #final-message-card h3 {
-        font-size: 1.8rem;
-    }
-
-    #final-message-card p {
-        font-size: 1rem;
-    }
-}
-
-/* --- ACCESSIBILITY --- */
-@media (prefers-reduced-motion: reduce) {
-  #scene1-text .prompt {
-    animation: none;
-  }
-
-  /* The main GSAP animations are handled in JavaScript,
-     this is just a fallback for simple CSS animations. */
-}
-
-#lotus-container {
-    pointer-events: none;
-}
-
-.lotus-petal {
-    transform-origin: 50% 50%;
-    transition: transform 1s ease-in-out;
-}
-
-#peacock-container {
-    pointer-events: none;
-}
-
-.peacock-feather {
-    transform-origin: 50% 100%;
-}
-
-#rose-container {
-    pointer-events: none;
-}
-
-.rose-petal {
-    transform-origin: 50% 50%;
-    transition: transform 1s ease-in-out;
+@media (max-width:480px){
+.card{padding:18px;width:92%}
+.btn{padding:10px 12px}
 }
