@@ -1,3 +1,15 @@
+function debounce(func, wait) {
+  let timeout;
+  return function executedFunction(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func(...args);
+    };
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+}
+
 /*
 script.js
 - Uses PixiJS for the particle field and images
@@ -141,9 +153,9 @@ particles[i].y += Math.cos((Date.now()/1000 + i) * 0.2) * 0.06 * (1 + (2000 - pa
 });
 
 // handle resize
-window.addEventListener('resize', ()=>{
-app.renderer.resize(window.innerWidth, window.innerHeight);
-});
+window.addEventListener('resize', debounce(() => {
+  location.reload();
+}, 250));
 }
 
 // Scroll-driven timeline using GSAP ScrollTrigger
