@@ -1,48 +1,163 @@
-/* Reset + base */
-*{box-sizing:border-box;margin:0;padding:0}
-html,body{height:100%;width:100%;overflow-x:hidden;font-family:'Lora',serif;background:linear-gradient(180deg,#0a192f 0%, #191970 100%);}
-
-#pixi-container{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
-
-/* Overlay container sits above the canvas */
-#overlay{position:fixed;inset:0;z-index:5;pointer-events:none}
-
-.centered{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
-.headline{font-size:clamp(28px,6vw,72px);letter-spacing:1px;color:#E6E6E6;text-shadow:0 6px 30px rgba(10,25,47,0.6)}
-.gold{color:#FFD700;text-shadow:0 0 18px rgba(255,215,0,0.55),0 6px 30px rgba(10,25,47,0.6)}
-
-.scroll-hint{margin-top:18px;font-size:14px;display:flex;flex-direction:column;align-items:center;opacity:0.95;pointer-events:none}
-.scroll-hint .arrow{font-size:22px;display:block;animation:float 1.6s infinite ease-in-out}
-@keyframes float{0%{transform:translateY(0)}50%{transform:translateY(8px)}100%{transform:translateY(0)}}
-.scroll-hint .hint-text{margin-top:6px;color:#E6E6E6;opacity:0.9}
-
-/* Memory texts */
-#memory-texts{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:min(880px,90%);pointer-events:none}
-.memory{display:none;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(255,255,255,0.01));padding:20px;border-radius:12px;backdrop-filter: blur(4px);box-shadow:0 10px 30px rgba(0,0,0,0.5);color:#E6E6E6}
-.memory h2{font-size:20px;margin-bottom:8px;color:#FFD700}
-.memory p{font-size:16px;line-height:1.4}
-
-/* Final card */
-.card{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);min-width:320px;max-width:700px;padding:28px;border-radius:16px;background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));box-shadow:0 20px 60px rgba(0,0,0,0.65);color:#E6E6E6;text-align:center;opacity:0;pointer-events:none}
-.card h2{font-size:22px;color:#FFD700;margin-bottom:12px}
-.card-body{font-size:16px;margin-bottom:16px}
-.closing{font-style:italic;color:#E6E6E6}
-.card-actions{margin-top:12px}
-.btn{pointer-events:auto;padding:10px 16px;border-radius:8px;background:rgba(255,215,0,0.12);border:1px solid rgba(255,215,0,0.18);color:#FFD700;cursor:pointer}
-
-/* Visible / hidden helpers animated through JS (gsap will set inline styles) */
-
-/* Scroll track is what we pin for the scroll-driven timeline */
-.scroll-track{height:380vh;width:1px;position:relative;z-index:1}
-
-/* Responsive tweaks */
-@media (max-width:900px){
-.headline{font-size:clamp(28px,9vw,48px)}
-.memory h2{font-size:18px}
-.memory p{font-size:15px}
+/* General Styling */
+body {
+    background: #FFF8E1; /* Light cream background */
+    font-family: 'Cardo', serif;
+    color: #5D4037; /* Brown text color */
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
-@media (max-width:480px){
-.card{padding:18px;width:92%}
-.btn{padding:10px 12px}
+.container {
+    max-width: 800px;
+    width: 100%;
+    margin: auto;
+}
+
+.invitation {
+    background: #FFFFFF;
+    border: 8px solid #D4AF37; /* Gold border */
+    border-radius: 15px;
+    padding: 40px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    background-image: url('https://www.transparenttextures.com/patterns/paisley.png'); /* Subtle paisley background */
+}
+
+/* Header */
+.header h1 {
+    font-family: 'Tangerine', cursive;
+    font-size: 4em;
+    color: #C62828; /* Deep red color */
+    margin: 0;
+}
+
+.header h2 {
+    font-size: 1.5em;
+    margin: 10px 0;
+}
+
+/* Names */
+.names h1 {
+    font-family: 'Tangerine', cursive;
+    font-size: 5em;
+    color: #C62828;
+    margin: 10px 0;
+}
+
+.names p {
+    font-size: 2em;
+    color: #D4AF37;
+    margin: 0;
+}
+
+/* Details, Event, Schedule */
+.details, .event, .schedule {
+    margin: 30px 0;
+}
+
+.details p, .event p {
+    font-size: 1.2em;
+    margin: 5px 0;
+}
+
+.event h2 {
+    font-size: 1.8em;
+    color: #C62828;
+    margin: 5px 0;
+}
+
+.schedule h3 {
+    font-size: 1.6em;
+    color: #C62828;
+    margin-bottom: 15px;
+    border-bottom: 2px solid #D4AF37;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.schedule p {
+    font-size: 1.2em;
+    margin: 8px 0;
+}
+
+/* Action Buttons */
+.actions {
+    margin: 30px 0;
+}
+
+.button {
+    background-color: #C62828;
+    color: #FFFFFF;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 1em;
+    margin: 10px;
+    display: inline-block;
+    transition: background-color 0.3s;
+}
+
+.button:hover {
+    background-color: #A92222;
+}
+
+/* RSVP Form */
+.rsvp {
+    margin: 30px 0;
+    padding-top: 20px;
+    border-top: 2px solid #D4AF37;
+}
+
+.rsvp h3 {
+    font-size: 1.6em;
+    color: #C62828;
+    margin-bottom: 15px;
+}
+
+.rsvp p {
+    font-size: 1.1em;
+    margin-bottom: 20px;
+}
+
+#rsvpForm input, #rsvpForm select {
+    width: calc(100% - 24px);
+    padding: 12px;
+    margin-bottom: 15px;
+    border: 1px solid #D4AF37;
+    border-radius: 8px;
+    font-size: 1em;
+}
+
+#rsvpForm button {
+    width: 100%;
+}
+
+/* Footer */
+.footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 2px solid #D4AF37;
+}
+
+.footer p {
+    font-family: 'Tangerine', cursive;
+    font-size: 2.5em;
+    color: #5D4037;
+    margin: 5px 0;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .invitation {
+        padding: 20px;
+    }
+
+    .header h1, .names h1, .footer p {
+        font-size: 3em;
+    }
 }
