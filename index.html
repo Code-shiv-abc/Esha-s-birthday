@@ -3,65 +3,72 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Isha's Celestial Journey</title>
+<title>Wedding Invitation</title>
 <link rel="stylesheet" href="style.css" />
-<!-- Fonts -->
-<link href="https://fonts.googleapis.com/css2?family=Lora:wght@400;700&display=swap" rel="stylesheet">
-
-<!-- GSAP (core + ScrollTrigger) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-
-<!-- PixiJS -->
-<script src="https://pixijs.download/release/pixi.min.js"></script>
-
-<!-- small meta for theme color on mobile -->
-<meta name="theme-color" content="#0a192f" />
+<link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@700&family=Cardo:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-<!-- PIXI container -->
-<div id="pixi-container"></div>
 
-<!-- Overlays (DOM elements on top of canvas) -->
-<div id="overlay">
-<!-- Intro / invitation -->
-<div id="intro" class="centered">
-<h1 class="headline gold">Radhey Radhey</h1>
-<div class="scroll-hint" aria-hidden="true">
-<span class="arrow">▾</span>
-<span class="hint-text">Begin the Journey</span>
-</div>
-</div>
+<div class="container">
+    <div class="invitation">
+        <div class="header">
+            <h1>|| श्री गणेशाय नमः ||</h1>
+            <h2>You are joyfully invited to the wedding of</h2>
+        </div>
 
-<!-- Memory text boxes (hidden until focus) -->
-<div id="memory-texts">
-<div class="memory" id="mem-devotion">
-<h2>Devotion</h2>
-<p>Devotion: A quiet strength that lights the darkest paths.</p>
-</div>
-<div class="memory" id="mem-compassion">
-<h2>Compassion</h2>
-<p>Compassion: The instinct to nurture, to heal and to hold.</p>
-</div>
-<div class="memory" id="mem-wanderlust">
-<h2>Wanderlust</h2>
-<p>Wanderlust: The joy of discovery — always curious, always kind.</p>
-</div>
-</div>
+        <div class="names">
+            <h1>Isha</h1>
+            <p>&</p>
+            <h1>Aarav</h1>
+        </div>
 
-<!-- Final message card (hidden until reveal) -->
-<div id="finalCard" class="card">
-<h2>To a Truly Special Friend</h2>
-<p class="card-body">May your year ahead be as bright and beautiful as the journey we've all been on with you. You bring so much light to the world, and today, we celebrate all of it. Keep shining.</p>
-<p class="closing">With all our love,</p>
-<div class="card-actions">
-<button id="replayBtn" class="btn">Replay</button>
-</div>
-</div>
-</div>
+        <div class="details">
+            <p>Son and Daughter of</p>
+            <p>Mrs. & Mr. Sharma and Mrs. & Mr. Verma</p>
+            <p>request the pleasure of your company to celebrate their marriage</p>
+        </div>
 
-<!-- A tall scroll-track controls the scroll-triggered timeline (we pin and scrub it) -->
-<div class="scroll-track" aria-hidden="true"></div>
+        <div class="event">
+            <p>on</p>
+            <h2>Sunday, 28th December 2024</h2>
+            <p>at</p>
+            <h2>The Grand Palace, New Delhi</h2>
+        </div>
+
+        <div class="schedule">
+            <h3>Schedule of Events</h3>
+            <p><strong>Mehendi:</strong> Saturday, 27th Dec, 4:00 PM</p>
+            <p><strong>Sangeet:</strong> Saturday, 27th Dec, 7:00 PM</p>
+            <p><strong>Wedding Ceremony:</strong> Sunday, 28th Dec, 6:00 PM</p>
+            <p><strong>Reception:</strong> Sunday, 28th Dec, 8:00 PM</p>
+        </div>
+
+        <div class="actions">
+            <a href="https://maps.google.com/?q=The+Grand+Palace,New+Delhi" class="button" target="_blank">Venue on Google Maps</a>
+            <a href="https://wa.me/?text=Join%20us%20to%20celebrate%20the%20wedding%20of%20Isha%20and%20Aarav%20on%20Dec%2028th!%20[Your-Link-Here]" class="button" target="_blank">Share on WhatsApp</a>
+            <a href="#" class="button" id="addToCalendar">Add to Google Calendar</a>
+        </div>
+
+        <div class="rsvp">
+            <h3>RSVP</h3>
+            <p>We look forward to celebrating with you. Kindly RSVP by 15th December 2024.</p>
+            <form id="rsvpForm">
+                <input type="text" id="guestName" placeholder="Your Name" required>
+                <select id="attending" required>
+                    <option value="">Will you be attending?</option>
+                    <option value="yes">Yes, I will attend</option>
+                    <option value="no">Sorry, I can't make it</option>
+                </select>
+                <button type="submit" class="button">Submit RSVP</button>
+            </form>
+        </div>
+
+        <div class="footer">
+            <p>With love and blessings from</p>
+            <p>The Sharma & Verma Families</p>
+        </div>
+    </div>
+</div>
 
 <script src="script.js"></script>
 </body>
