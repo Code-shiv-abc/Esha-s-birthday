@@ -10,6 +10,10 @@
 <body>
 
 <div class="container">
+    <!--
+        IMPORTANT: To receive RSVP emails, please open the 'script.js' file
+        and replace 'rsvp@example.com' with your own email address.
+    -->
     <div class="invitation">
         <div class="header">
             <h1>|| श्री गणेशाय नमः ||</h1>
@@ -45,7 +49,7 @@
 
         <div class="actions">
             <a href="https://maps.google.com/?q=The+Grand+Palace,New+Delhi" class="button" target="_blank">Venue on Google Maps</a>
-            <a href="https://wa.me/?text=Join%20us%20to%20celebrate%20the%20wedding%20of%20Isha%20and%20Aarav%20on%20Dec%2028th!%20[Your-Link-Here]" class="button" target="_blank">Share on WhatsApp</a>
+            <a href="https://wa.me/?text=Join%20us%20to%20celebrate%20the%20wedding%20of%20Isha%20and%20Aarav%20on%20Dec%2028th!%20" class="button" target="_blank">Share on WhatsApp</a>
             <a href="#" class="button" id="addToCalendar">Add to Google Calendar</a>
         </div>
 
@@ -61,6 +65,10 @@
                 </select>
                 <button type="submit" class="button">Submit RSVP</button>
             </form>
+            <div id="rsvpSuccess" style="display: none;">
+                <h3>Thank You!</h3>
+                <p>Your RSVP has been received.</p>
+            </div>
         </div>
 
         <div class="footer">
