@@ -25,6 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // RSVP Form Handling
     const rsvpForm = document.getElementById('rsvpForm');
+    const rsvpSuccess = document.getElementById('rsvpSuccess');
     if (rsvpForm) {
         rsvpForm.addEventListener('submit', (e) => {
             e.preventDefault();
@@ -33,12 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
             const attending = document.getElementById('attending').value;
 
             if (guestName && attending) {
-                // In a real application, this would send data to a server.
-                // For this demo, we'll just show a confirmation message.
-                alert(`Thank you for your RSVP, ${guestName}!`);
-                rsvpForm.reset();
+                // This is a serverless approach for a static site.
+                // It constructs a mailto link to send the RSVP details to the host.
+                const subject = "Wedding RSVP";
+                const body = `Name: ${guestName}\nAttending: ${attending}`;
+                window.location.href = `mailto:rsvp@example.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+
+                // Hide the form and show the success message
+                rsvpForm.style.display = 'none';
+                rsvpSuccess.style.display = 'block';
             } else {
-                alert('Please fill out all fields.');
+                // A more subtle way to ask for completion
+                alert('Please fill in your name and whether you will be attending.');
             }
         });
     }
