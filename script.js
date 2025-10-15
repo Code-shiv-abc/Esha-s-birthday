@@ -3,29 +3,73 @@ document.addEventListener('DOMContentLoaded', () => {
     const openButton = document.getElementById('open-invitation');
     const container = document.querySelector('.container');
 
+    const musicControlContainer = document.getElementById('music-control-container');
+    const musicControlButton = document.getElementById('music-control');
+
     openButton.addEventListener('click', () => {
         coverScreen.style.opacity = '0';
         coverScreen.style.transform = 'translateY(-100%)';
         setTimeout(() => {
             coverScreen.style.display = 'none';
             container.style.display = 'block';
-            musicControl.style.display = 'block';
-            backgroundMusic.play();
+            musicControlContainer.style.display = 'block';
+            startMusic();
+            musicControlButton.textContent = 'Pause Music';
         }, 1000); // Match timeout to the CSS transition duration
     });
 
-    // Background Music
-    const backgroundMusic = document.getElementById('background-music');
-    const musicControl = document.getElementById('music-control');
-    musicControl.addEventListener('click', () => {
-        if (backgroundMusic.paused) {
-            backgroundMusic.play();
-            musicControl.textContent = 'Pause Music';
+    musicControlButton.addEventListener('click', () => {
+        if (isPlaying) {
+            stopMusic();
+            musicControlButton.textContent = 'Play Music';
         } else {
-            backgroundMusic.pause();
-            musicControl.textContent = 'Play Music';
+            startMusic();
+            musicControlButton.textContent = 'Pause Music';
         }
     });
+
+    // Web Audio API for Procedural Music
+    let audioCtx;
+    let oscillator;
+    let gainNode;
+    let isPlaying = false;
+    const notes = [261.63, 293.66, 329.63, 349.23, 392.00, 440.00, 493.88, 523.25];
+    let noteIndex = 0;
+    let musicInterval;
+
+    function playNote() {
+        if (!audioCtx) {
+            audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        oscillator = audioCtx.createOscillator();
+        gainNode = audioCtx.createGain();
+
+        oscillator.connect(gainNode);
+        gainNode.connect(audioCtx.destination);
+
+        oscillator.type = 'sine';
+        oscillator.frequency.setValueAtTime(notes[noteIndex % notes.length], audioCtx.currentTime);
+        gainNode.gain.setValueAtTime(0.1, audioCtx.currentTime);
+        gainNode.gain.exponentialRampToValueAtTime(0.00001, audioCtx.currentTime + 0.8);
+
+        oscillator.start(audioCtx.currentTime);
+        oscillator.stop(audioCtx.currentTime + 0.8);
+
+        noteIndex++;
+    }
+
+    function startMusic() {
+        if (isPlaying) return;
+        isPlaying = true;
+        playNote();
+        musicInterval = setInterval(playNote, 600);
+    }
+
+    function stopMusic() {
+        if (!isPlaying) return;
+        isPlaying = false;
+        clearInterval(musicInterval);
+    }
 
     // Google Calendar Integration
     const addToCalendarButton = document.getElementById('addToCalendar');

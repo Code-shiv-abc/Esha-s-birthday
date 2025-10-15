@@ -26,7 +26,7 @@
     margin-bottom: 30px;
 }
 
-#music-control {
+#music-control-container {
     position: fixed;
     bottom: 20px;
     right: 20px;
