@@ -64,11 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const attending = document.getElementById('attending').value;
 
             if (guestName && attending) {
-                // This is a serverless approach for a static site.
-                // It constructs a mailto link to send the RSVP details to the host.
-                const subject = "Wedding RSVP";
-                const body = `Name: ${guestName}\nAttending: ${attending}`;
-                window.location.href = `mailto:rsvp@example.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+                const message = `RSVP\nName: ${guestName}\nAttending: ${attending}`;
+                const whatsappUrl = `https://wa.me/917355556366?text=${encodeURIComponent(message)}`;
+                window.open(whatsappUrl, '_blank');
 
                 // Hide the form and show the success message
                 rsvpForm.style.display = 'none';
